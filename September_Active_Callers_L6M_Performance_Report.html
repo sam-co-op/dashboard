@@ -580,7 +580,8 @@
         </div>
     </nav>
 
-<header>
+<header style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px;">
+<div>
 <h1>September Active Callers 6-Month Longitudinal Performance Report</h1>
 <div class="meta-subtitle">High-Level Manager Performance &amp; Caller Tier Summary by Month | Shah Finlease</div>
 <div>
@@ -588,6 +589,12 @@
 <span class="badge-info">Analysis Window: April 2026 – September 2026</span>
 <span class="badge-info">Source: PostgreSQL recoverydb (caller_target_achieved)</span>
 <span class="badge-info">Format: Standard Accounting (Hyphen for 0)</span>
+</div>
+</div>
+<div style="display:flex; align-items:center; gap:10px; margin-top:8px;">
+    <button id="btn-toggle-active-sep-report" class="quick-filter-btn active" onclick="toggleActiveCallersOnlySepReport()" style="font-weight:700; height:36px; padding:0 14px; font-size:12.5px; border-radius:6px; background:#0F172A; color:#FFFFFF; border:1px solid #0F172A; cursor:pointer;">
+        Active Callers Only (September Filter)
+    </button>
 </div>
 </header>
 <!-- SECTION 0: Interactive Manager 6-Month Performance Chart -->
@@ -8001,6 +8008,7 @@ Frontline callers originally under Jayesh Ghadigaonkar (pre-merge April–May), 
 
                     const presets = [
                         { label: 'All', key: 'all' },
+                        { label: 'Active (Sep)', key: 'activeSep' },
                         { label: '≥ 100%', key: 'over100' },
                         { label: '70% – 100%', key: 'mid70_100' },
                         { label: '< 70%', key: 'below70' },
@@ -8286,6 +8294,9 @@ Frontline callers originally under Jayesh Ghadigaonkar (pre-merge April–May), 
 
             if (key === 'all') {
                 show = true;
+            } else if (key === 'activeSep') {
+                const rowText = r.innerText.toLowerCase();
+                show = !rowText.includes('inactive') && !rowText.includes('left') && (achPct > 0 || rowText.includes('active'));
             } else if (key === 'over100') {
                 show = (achPct >= 100);
             } else if (key === 'mid70_100') {
@@ -8330,6 +8341,41 @@ Frontline callers originally under Jayesh Ghadigaonkar (pre-merge April–May), 
         if (th0 && th0.classList.contains('sorted-desc')) {
             sortReportTable(table, 0);
         }
+    }
+
+    let sepReportActiveOnly = true;
+
+    function toggleActiveCallersOnlySepReport() {
+        sepReportActiveOnly = !sepReportActiveOnly;
+        const btn = document.getElementById('btn-toggle-active-sep-report');
+        if (btn) {
+            btn.classList.toggle('active', sepReportActiveOnly);
+            if (sepReportActiveOnly) {
+                btn.style.background = '#0F172A';
+                btn.style.color = '#FFFFFF';
+            } else {
+                btn.style.background = '#F8FAFC';
+                btn.style.color = '#334155';
+            }
+        }
+
+        // Apply to all tables in the document
+        document.querySelectorAll('table.report-table tbody').forEach(tbody => {
+            const rows = tbody.querySelectorAll('tr');
+            rows.forEach(r => {
+                if (r.classList.contains('caller-drilldown-row')) return;
+                if (sepReportActiveOnly) {
+                    const text = r.innerText.toLowerCase();
+                    if (text.includes('inactive') || text.includes('left desk') || text.includes('unassigned')) {
+                        r.style.display = 'none';
+                    } else {
+                        r.style.display = '';
+                    }
+                } else {
+                    r.style.display = '';
+                }
+            });
+        });
     }
 
     window.onload = function() {
