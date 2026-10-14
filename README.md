@@ -16,3 +16,6 @@ Automated debt recovery performance and calendar pacing intelligence suite for e
   - Unit toggle (Crores vs. Lakhs)
   - Working day run-rate and month-end recovery surge pacing
   - Daily ledger with accounts split
+- **[September Active Callers 6-Month Longitudinal Performance Report](https://sam-co-op.github.io/dashboard/September_Active_Callers_L6M_Performance_Report.html)**
+  - Longitudinal performance analysis across 6 months (April – September 2026)
+  - Comprehensive telecaller efficiency metrics, pacing, and recovery volumes
