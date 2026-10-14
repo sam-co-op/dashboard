@@ -2953,13 +2953,13 @@
 <option value="COLLAPSE">Collapse All Teams</option>
 <option disabled="">──────────────────────────</option>
 <option value="mgr_ambuj">1. AMBUJ TRIPATHI (11 Callers)</option>
-<option value="mgr_shravanthi">2. SHRAVANTHI (9 Callers)</option>
-<option value="mgr_omkar">3. OMKAR (7 Callers)</option>
-<option value="mgr_poonam">4. POONAM INDULKAR (6 Callers)</option>
-<option value="mgr_customercare">5. Customer Care (1 Caller)</option>
-<option value="mgr_aditi">6. ADITI GAWADE (9 Callers)</option>
-<option value="mgr_smita">7A. SMITA JAGTAP (Core & Joinees - 14 Callers)</option>
-<option value="mgr_jayesh">7B. JAYESH GHADIGAONKAR (Merged Roster - 3 Callers)</option>
+<option value="mgr_smita">2A. SMITA JAGTAP (Core &amp; Joinees - 14 Callers)</option>
+<option value="mgr_jayesh">2B. JAYESH GHADIGAONKAR (Merged Roster - 3 Callers)</option>
+<option value="mgr_poonam">3. POONAM INDULKAR (6 Callers)</option>
+<option value="mgr_shravanthi">4. SHRAVANTHI (9 Callers)</option>
+<option value="mgr_aditi">5. ADITI GAWADE (9 Callers)</option>
+<option value="mgr_omkar">6. OMKAR (7 Callers)</option>
+<option value="mgr_customercare">7. Customer Care (1 Caller)</option>
 <option value="mgr_shweta">8. SHWETA SINGH (6 Callers)</option>
 <option value="mgr_saroj">9. SAROJ B (1 Caller)</option>
 </select>
@@ -3079,7 +3079,7 @@
 <td class="text-center" style="font-size:11px; color:#1e3a8a;">Aug (102.9%)</td>
 <td class="text-center" style="font-size:11px; color:#991b1b;">Sep (0.0%)</td>
 </tr>
-<tr class="mgr-matrix-header-row" <tr class="mgr-matrix-header-row" id="mgr-header-2a" onclick="toggleManagerCallers('2a')" style="background:#f8fafc; font-weight:700; cursor:pointer; border-top:2px solid var(--neutral-border);">
+<tr class="mgr-matrix-header-row" id="mgr-header-2a" onclick="toggleManagerCallers('2a')" style="background:#f8fafc; font-weight:700; cursor:pointer; border-top:2px solid var(--neutral-border);">
 <td class="text-center" style="font-size:12.5px;">2A</td>
 <td style="font-size:13px; color:var(--primary);"><span id="mgr-icon-2a" style="display:inline-block; width:16px;">▶</span> <strong>SMITA JAGTAP</strong> <span style="font-size:11px; font-weight:normal; color:var(--text-muted);">(Core &amp; Joinees - 14 callers)</span></td>
 <td class="text-center"><span class="mgr-matrix-badge tier-100-130">106.5%</span></td> <td class="text-center"><span class="mgr-matrix-badge tier-b70">21.9%</span></td> <td class="text-center"><span class="mgr-matrix-badge tier-b70">43.2%</span></td> <td class="text-center"><span class="mgr-matrix-badge tier-70-100">71.6%</span></td> <td class="text-center"><span class="mgr-matrix-badge tier-70-100">70.4%</span></td> <td class="text-center"><span class="mgr-matrix-badge tier-b70">50.7%</span></td>
@@ -3231,7 +3231,7 @@
 <td class="text-center" style="font-size:11.5px; font-weight:600; color:#1e3a8a;">Aug (102.6%)</td>
 <td class="text-center" style="font-size:11.5px; font-weight:600; color:#991b1b;">May (16.0%)</td>
 </tr>
-id="mgr-header-3" onclick="toggleManagerCallers('3')" style="background:#f8fafc; font-weight:700; cursor:pointer; border-top:2px solid var(--neutral-border);">
+<tr class="mgr-matrix-header-row" id="mgr-header-3" onclick="toggleManagerCallers('3')" style="background:#f8fafc; font-weight:700; cursor:pointer; border-top:2px solid var(--neutral-border);">
 <td class="text-center" style="font-size:12.5px;">3</td>
 <td style="font-size:13px; color:var(--primary);"><span id="mgr-icon-3" style="display:inline-block; width:16px;">▶</span> <strong>POONAM INDULKAR</strong> <span style="font-size:11px; font-weight:normal; color:var(--text-muted);">(6 callers)</span></td>
 <td class="text-center"><span class="mgr-matrix-badge tier-100-130">100.9%</span></td> <td class="text-center"><span class="mgr-matrix-badge tier-70-100">79.1%</span></td> <td class="text-center"><span class="mgr-matrix-badge tier-b70">55.3%</span></td> <td class="text-center"><span class="mgr-matrix-badge tier-70-100">80.9%</span></td> <td class="text-center"><span class="mgr-matrix-badge tier-70-100">94.2%</span></td> <td class="text-center"><span class="mgr-matrix-badge tier-70-100">77.5%</span></td>
@@ -7783,7 +7783,19 @@ Frontline callers originally under Jayesh Ghadigaonkar (pre-merge April–May), 
     }
 
     function handleMatrixDropdownChange(val) {
-        const allMgrIds = ['mgr_ambuj', 'mgr_shravanthi', 'mgr_omkar', 'mgr_poonam', 'mgr_customercare', 'mgr_aditi', 'mgr_smita', 'mgr_jayesh', 'mgr_shweta', 'mgr_saroj', '1', '2a', '2b', '3', '4', '5', '6', '7', '8', '9'];
+        const allMgrIds = ['1', '2a', '2b', '3', '4', '5', '6', '7', '8', '9'];
+        const MGR_KEY_MAP = {
+            '1': '1', 'mgr_ambuj': '1',
+            '2a': '2a', 'mgr_smita': '2a',
+            '2b': '2b', 'mgr_jayesh': '2b',
+            '3': '3', 'mgr_poonam': '3',
+            '4': '4', 'mgr_shravanthi': '4',
+            '5': '5', 'mgr_aditi': '5',
+            '6': '6', 'mgr_omkar': '6',
+            '7': '7', 'mgr_customercare': '7',
+            '8': '8', 'mgr_shweta': '8',
+            '9': '9', 'mgr_saroj': '9'
+        };
         
         if (val === 'ALL') {
             allMgrIds.forEach(id => {
@@ -7802,8 +7814,9 @@ Frontline callers originally under Jayesh Ghadigaonkar (pre-merge April–May), 
                 if (row) row.classList.remove('expanded');
             });
         } else {
+            const targetId = MGR_KEY_MAP[val];
             allMgrIds.forEach(id => {
-                const match = (id === val || ('mgr_' + id) === val || (val === 'mgr_smita' && id === '2a') || (val === 'mgr_jayesh' && id === '2b'));
+                const match = (id === targetId);
                 document.querySelectorAll('.caller-row-' + id + ', .mgr-group-' + id).forEach(r => {
                     r.style.display = match ? 'table-row' : 'none';
                 });
@@ -7815,6 +7828,10 @@ Frontline callers originally under Jayesh Ghadigaonkar (pre-merge April–May), 
                     else row.classList.remove('expanded');
                 }
             });
+            if (targetId) {
+                const targetHeader = document.getElementById('mgr-header-' + targetId);
+                if (targetHeader) targetHeader.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
         }
     }
 
@@ -8347,8 +8364,8 @@ Frontline callers originally under Jayesh Ghadigaonkar (pre-merge April–May), 
 
     let sepReportActiveOnly = true;
 
-    function toggleActiveCallersOnlySepReport() {
-        sepReportActiveOnly = !sepReportActiveOnly;
+    function applySepReportActiveFilter(activeOnly) {
+        sepReportActiveOnly = activeOnly;
         const btn = document.getElementById('btn-toggle-active-sep-report');
         if (btn) {
             btn.classList.toggle('active', sepReportActiveOnly);
@@ -8380,9 +8397,14 @@ Frontline callers originally under Jayesh Ghadigaonkar (pre-merge April–May), 
         });
     }
 
+    function toggleActiveCallersOnlySepReport() {
+        applySepReportActiveFilter(!sepReportActiveOnly);
+    }
+
     window.onload = function() {
         initChart();
         initSortableAndFilterableTables();
+        applySepReportActiveFilter(true);
     };
 </script>
 </body>

@@ -1386,8 +1386,9 @@
                             </div>
                         </div>
                         <div style="display:flex; gap:6px;">
-                            <button class="expand-toggle-btn" onclick="selectAllMonthsTrends()" style="font-size:11px;">Select All</button>
+                            <button class="expand-toggle-btn" onclick="selectSepMonthTrends()" style="font-size:11px;">Select Sep</button>
                             <button class="expand-toggle-btn" onclick="selectL6MMonthsTrends()" style="font-size:11px;">Select L6M</button>
+                            <button class="expand-toggle-btn" onclick="selectAllMonthsTrends()" style="font-size:11px;">Select All</button>
                         </div>
                     </div>
                 </div>
@@ -1499,7 +1500,8 @@
     let trendsHorizon = '9M';
     let selectedTrendsMgr = 'ALL';
     const ROSTER_MONTHS = ['April', 'May', 'June', 'July', 'August', 'September'];
-    let selectedRosterMonth = 'ALL';
+    let selectedRosterMonth = 'September';
+    let rosterViewMode = 'ACTIVE_ONLY';
     let currentMainTab = 'gallery';
     const ALL_MONTHS = ['Jan 2026', 'Feb 2026', 'Mar 2026', 'Apr 2026', 'May 2026', 'Jun 2026', 'Jul 2026', 'Aug 2026', 'Sep 2026'];
     const monthLabelsMap = { 1: 'Jan 2026', 2: 'Feb 2026', 3: 'Mar 2026', 4: 'Apr 2026', 5: 'May 2026', 6: 'Jun 2026', 7: 'Jul 2026', 8: 'Aug 2026', 9: 'Sep 2026' };
@@ -1630,9 +1632,15 @@
         let mgrFilteredStAcc = 0;
         let mgrFilteredPtRec = 0;
         let mgrFilteredPtAcc = 0;
-        let mgrFilteredTgt = 0;
+        let callersToProcess = m.callers;
+        if (galleryActiveOnly) {
+            callersToProcess = m.callers.filter(c => {
+                const sepMo = c.months.find(item => item.mo === 9);
+                return sepMo && ((sepMo.target_lakh > 0) || (sepMo.tot_rec > 0));
+            });
+        }
 
-        const preparedCallers = m.callers.map(c => {
+        const preparedCallers = callersToProcess.map(c => {
             // Filter months for caller
             const filteredMonths = c.months.filter(item => selectedMonths.has(item.label));
 
@@ -1699,7 +1707,7 @@
                 </div>
                 <div style="display:flex; gap:8px; align-items:center;">
                     <span style="font-size:12px; color:#94A3B8;">Scope: <b>${monthsCountText}</b></span>
-                    <span class="mgr-banner-badge">${m.callers_count} Active Telecallers</span>
+                    <span class="mgr-banner-badge">${callersToProcess.length} ${galleryActiveOnly ? 'Active (Sep)' : 'Total'} Telecallers</span>
                 </div>
             </div>
             <div class="mgr-kpi-grid">
@@ -1737,14 +1745,7 @@
         `;
 
         // 2. Set active callers and render grid
-        if (galleryActiveOnly) {
-            activeCallers = preparedCallers.filter(c => {
-                const sepMo = c.months.find(m => m.mo === 9);
-                return sepMo && ((sepMo.target_lakh > 0) || (sepMo.tot_rec > 0));
-            });
-        } else {
-            activeCallers = preparedCallers;
-        }
+        activeCallers = preparedCallers;
         const sortVal = document.getElementById('sort-select').value;
         applySort(sortVal);
         renderCallerCards();
@@ -2548,6 +2549,10 @@
         colPrevSeats.forEach(el => {
             el.style.display = (rosterViewMode === 'ACTIVE_ONLY') ? 'none' : '';
         });
+        const colNetChange = document.querySelectorAll('#roster-main-table .col-net-change');
+        colNetChange.forEach(el => {
+            el.style.display = (rosterViewMode === 'ACTIVE_ONLY') ? 'none' : '';
+        });
 
         // Filter ROSTER_DATA
         let filtered = ROSTER_DATA.filter(r => {
@@ -2825,6 +2830,12 @@
         } else {
             selectedTrendsMonths.add(m);
         }
+        initTrendsMonthPills();
+        renderTrendsView();
+    }
+
+    function selectSepMonthTrends() {
+        selectedTrendsMonths = new Set(['September']);
         initTrendsMonthPills();
         renderTrendsView();
     }
